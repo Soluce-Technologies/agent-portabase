@@ -1,0 +1,22 @@
+name: agent-portabase
+
+services:
+  app:
+    container_name: agent-portabase-app
+    restart: always
+    build:
+      context: .
+      dockerfile: docker/dockerfile/app/Dockerfile
+
+    ports:
+      - "8003:80"
+
+    volumes:
+      - ./src:/src
+
+    environment:
+      - ENVIRONMENT=development
+
+    command: uvicorn main:app --reload --host 0.0.0.0 --port 80
+
+

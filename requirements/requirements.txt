@@ -1,0 +1,16 @@
+fastapi[all]
+pydantic==2.6.0
+pydantic-settings
+websockets
+python-dotenv
+
+# deployment libraries
+uvicorn[standard]
+gunicorn
+
+# auth libraries
+python-jose[cryptography]
+passlib[bcrypt]
+
+requests
+pandas

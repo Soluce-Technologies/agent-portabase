@@ -1,0 +1,17 @@
+# Git
+.git
+.gitignore
+
+# Python
+src/__pycache__/
+src/*/__pycache__/
+src/*/*/__pycache__/
+src/*/*/*/__pycache__/
+
+# MD files
+CHANGELOG.md
+README.md
+RELEASE.md
+
+#IDE configurations
+.idea
