@@ -7,16 +7,52 @@ services:
     build:
       context: .
       dockerfile: docker/dockerfile/app/Dockerfile
-
     ports:
       - "8003:80"
-
     volumes:
       - ./src:/src
-
     environment:
       - ENVIRONMENT=development
-
     command: uvicorn main:app --reload --host 0.0.0.0 --port 80
 
+  broker:
+    image: redis:7
+    ports:
+      - "6379:6379"
 
+  worker:
+    build:
+      context: .
+      dockerfile: docker/dockerfile/app/Dockerfile
+    command: watchmedo auto-restart -p '*.py' -- celery -A worker.celery worker --loglevel=info
+    volumes:
+      - ./src:/src
+    environment:
+      - TZ=Europe/Paris
+
+  celery_beat:
+    build:
+      context: .
+      dockerfile: docker/dockerfile/app/Dockerfile
+    command: watchmedo auto-restart -p '*.py' -- celery -A worker.celery beat --loglevel=info
+    volumes:
+      - ./src:/src
+    environment:
+      - TZ=Europe/Paris
+    depends_on:
+      - broker
+
+  flower:
+    build:
+      context: .
+      dockerfile: docker/dockerfile/app/Dockerfile
+    command: watchmedo auto-restart -p '*.py' -- celery --broker=redis://broker:6379/0 flower --port=5555
+    ports:
+      - 5556:5555
+    environment:
+      - TZ=Europe/Paris
+      - CELERY_ACCEPT_CONTENT = ['pickle']
+    depends_on:
+      - app
+      - broker
+      - worker

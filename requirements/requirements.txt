@@ -14,3 +14,9 @@ passlib[bcrypt]
 
 requests
 pandas
+watchdog
+
+# Task queues libraries
+celery
+redis
+flower
