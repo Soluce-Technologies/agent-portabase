@@ -1,15 +1,28 @@
+import logging
+import os
+import warnings
+from logging.config import dictConfig
+
 from celery import Celery
 from kombu import Exchange, Queue
+
+from logging_config import setup_logging
 from settings import config
 from celery.schedules import crontab
 from tasks.tasks import ping_server
 
-app = Celery('my_celery_app')
+
+warnings.filterwarnings("ignore", category=UserWarning)
+
+app = Celery('portabase-agent')
+
+if os.getenv("ENVIRONMENT") != "development":
+    setup_logging()
+
 app.conf.broker_url = config.CELERY_BROKER_URL
 app.conf.result_backend = config.CELERY_RESULT_BACKEND
 app.conf.broker_connection_retry_on_startup = True
 
-# Registering an exchange and two queues
 default_exchange = Exchange('default', type='topic')
 
 app.conf.task_queues = (
@@ -24,7 +37,6 @@ app.conf.task_default_routing_key = 'default'
 
 app.autodiscover_tasks()
 
-# Configuring tasks routes
 CELERY_TASK_ROUTES = {
     'default.*': {
         'queue': 'default',

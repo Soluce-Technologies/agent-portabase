@@ -19,3 +19,7 @@ If you're using Semantic Versioning (SemVer) to version your Docker images, you 
 ```major.minor.patch-rc.release (e.g. 1.0.0-rc.1)```
 
 ```major.minor.patch-rc.release-tag (e.g. 1.0.0-rc.1-dev)```
+
+
+docker tag agent-portabase-app solucetechnologies/agent-portabase:0.0.1-rc.1-dev
+docker push solucetechnologies/agent-portabase:0.0.1-rc.1-dev

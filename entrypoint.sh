@@ -9,14 +9,13 @@ echo " /_/    \____/_/   \__/\__,_/_.___/\__,_/____/\___/  /_/  |_\__, /\___/_/ 
 echo "                                                           /____/                   "
 
 
-
 # Start Redis in the background
 echo "Starting Redis server..."
-redis-server --loglevel notice &
+redis-server --loglevel notice &>/dev/null &
 
 # Start Celery worker in the background
 echo "Starting Celery worker..."
-celery -A main worker --loglevel=info &
+celery -A main worker --loglevel=INFO  &
 
 # Start Celery Beat in the background
 echo "Starting Celery Beat..."
