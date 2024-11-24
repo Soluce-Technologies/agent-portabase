@@ -2,57 +2,15 @@ name: agent-portabase
 
 services:
   app:
-    container_name: agent-portabase-app
+    container_name: agent-portabase
     restart: always
     build:
       context: .
-      dockerfile: docker/dockerfile/app/Dockerfile
-    ports:
-      - "8003:80"
+      dockerfile: docker/Dockerfile
     volumes:
-      - ./src:/src
+      - ./src:/app/src
     environment:
       - ENVIRONMENT=development
-    command: uvicorn main:app --reload --host 0.0.0.0 --port 80
+      - EDGE_KEY=eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY20zdnFwc29hMDAwMjE0b2V3czVvc3dxcSJ9
 
-  broker:
-    image: redis:7
-    ports:
-      - "6379:6379"
-
-  worker:
-    build:
-      context: .
-      dockerfile: docker/dockerfile/app/Dockerfile
-    command: watchmedo auto-restart -p '*.py' -- celery -A worker.celery worker --loglevel=info
-    volumes:
-      - ./src:/src
-    environment:
-      - TZ=Europe/Paris
-
-  celery_beat:
-    build:
-      context: .
-      dockerfile: docker/dockerfile/app/Dockerfile
-    command: watchmedo auto-restart -p '*.py' -- celery -A worker.celery beat --loglevel=info
-    volumes:
-      - ./src:/src
-    environment:
-      - TZ=Europe/Paris
-    depends_on:
-      - broker
-
-  flower:
-    build:
-      context: .
-      dockerfile: docker/dockerfile/app/Dockerfile
-    command: watchmedo auto-restart -p '*.py' -- celery --broker=redis://broker:6379/0 flower --port=5555
-    ports:
-      - 5556:5555
-    environment:
-      - TZ=Europe/Paris
-      - CELERY_ACCEPT_CONTENT = ['pickle']
-    depends_on:
-      - app
-      - broker
-      - worker
+    network_mode: host #in development

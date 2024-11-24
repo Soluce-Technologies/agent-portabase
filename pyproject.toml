@@ -1,0 +1,50 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+
+[project]
+name = "portabase-agent"
+version = "0.1.0"
+description = "THe portabase agent project"
+authors = [
+    { name = "Charles Gauthereau", email = "charles.gauthereau@soluce-technologies.com" },
+    { name = "Killian Larcher", email = "killian.larcher@soluce-technologies.com" }
+]
+requires-python = ">=3.10,<4.0"
+
+dependencies = [
+    "celery>=5.4.0",
+    "kombu>=5.4.2",
+    "python-dotenv>=1.0,<1.1",
+    "pydantic-settings>=2.6.1",
+    "redis>=5.2.0",
+    "watchdog>=6.0.0",
+    "requests>=2.32.3"
+]
+classifiers = [
+    #   3 - Alpha
+    #   4 - Beta
+    #   5 - Production/Stable
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.13",
+]
+
+
+[dependency-groups]
+dev = [
+    "pytest<8.0.0,>=7.4.3",
+    "mypy<2.0.0,>=1.8.0",
+    "ruff<1.0.0,>=0.2.2",
+    "pre-commit<4.0.0,>=3.6.2",
+    "types-passlib<2.0.0.0,>=1.7.7.20240106",
+    "coverage<8.0.0,>=7.4.3",
+]
+
+[tool.ruff]
+target-version = "py313"
+exclude = ["alembic"]
+
