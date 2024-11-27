@@ -19,6 +19,9 @@ app = Celery('portabase-agent')
 if os.getenv("ENVIRONMENT") != "development":
     setup_logging()
 
+if not os.path.exists("src/files"):
+    os.makedirs("src/files")
+
 app.conf.broker_url = config.CELERY_BROKER_URL
 app.conf.result_backend = config.CELERY_RESULT_BACKEND
 app.conf.broker_connection_retry_on_startup = True
@@ -36,6 +39,7 @@ app.conf.task_default_exchange = 'default'
 app.conf.task_default_routing_key = 'default'
 
 app.autodiscover_tasks()
+
 
 CELERY_TASK_ROUTES = {
     'default.*': {

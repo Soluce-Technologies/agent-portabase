@@ -11,6 +11,28 @@ services:
       - ./src:/app/src
     environment:
       - ENVIRONMENT=development
-      - EDGE_KEY=eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY20zdnFwc29hMDAwMjE0b2V3czVvc3dxcSJ9
+      - EDGE_KEY=eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY20zenRoM3FyMDAwYmNxZmhsems3aDVpNyJ9
+      - DB_HOST=localhost
+      - DB_PORT=5432
+      - DB_USER=devuser
+      - DB_PASSWORD=changeme
+      - DB_NAME=devdb
+      - DB_TYPE=postgres
 
     network_mode: host #in development
+
+  db:
+    image: postgres:16-alpine
+    ports:
+      - "5430:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=devdb
+      - POSTGRES_USER=devuser
+      - POSTGRES_PASSWORD=changeme
+
+    network_mode: host #in development
+
+volumes:
+  postgres-data:

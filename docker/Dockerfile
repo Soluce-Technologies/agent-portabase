@@ -6,10 +6,20 @@ RUN apt-get update && apt-get install -y \
     redis-server \
     ca-certificates \
     build-essential \
-    postgresql-client \
     binutils \
     libproj-dev \
     gdal-bin \
+    curl \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add PostgreSQL APT repository
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | tee /etc/apt/trusted.gpg.d/pgdg.asc \
+    && apt-get update
+
+# Install PostgreSQL client (latest available version, likely 16.x)
+RUN apt-get install -y postgresql-client \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
