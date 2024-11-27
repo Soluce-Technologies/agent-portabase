@@ -3,7 +3,6 @@ import logging
 from celery import shared_task
 from settings import config
 from utils.edge_key import decode_edge_key
-from utils.postgres import PostgresDatabase
 from utils.status_request import status_request
 from .database import backup
 

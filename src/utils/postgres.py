@@ -6,7 +6,7 @@ import uuid
 
 class PostgresDatabase(Database):
     def __init__(self, host: str, database: str, user: str, password: str, port: str):
-        super().__init__(host, database, user, password, port, type="postgres")
+        super().__init__(host, database, user, password, port, type="postgresql")
 
         self.backup_file = f"src/files/{uuid.uuid4()}.dump"
 
@@ -29,7 +29,8 @@ class PostgresDatabase(Database):
         ]
 
     def backup(self):
-        return self.execute(self.command_backup)
+        status, result = self.execute(self.command_backup)
+        return status, result, self.backup_file
 
     def restore(self):
         return self.execute(self.command_restore)
