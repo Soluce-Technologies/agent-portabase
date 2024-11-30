@@ -2,21 +2,32 @@ import logging
 import requests
 
 from settings import config
+from utils.edge_key import EdgeKey
+from utils.get_config import get_config
+from utils.get_databases_config import DatabaseConfig
 
 logger = logging.getLogger('agent_logger')
 
 
-def status_request(data):
+def formatted_database(database: DatabaseConfig):
+    return {
+        "name": database.name,
+        "dbms": database.type,
+        "generatedId": database.generatedId,
+    }
+
+
+def status_request(data: EdgeKey, databases):
     try:
-        url = f"{data['serverUrl']}/api/agent/{data['agentId']}/status"
+        url = f"{data.serverUrl}/api/agent/{data.agentId}/status"
         logger.info(f'Status request | {url}')
-
+        databases_items = []
+        for database in databases:
+            databases_items.append(formatted_database(database))
         body = {
-            "name": config.DB_NAME,
-            "dbms": config.DB_TYPE,
+            "databases": databases_items,
         }
-
-        response = requests.post(url=url, data=body)
+        response = requests.post(url=url, json=body)
         response.raise_for_status()
         return response.json(), True
 

@@ -1,14 +1,15 @@
 import subprocess
 
+from settings import config
 from utils.database import Database
 import uuid
 
 
 class PostgresDatabase(Database):
-    def __init__(self, host: str, database: str, user: str, password: str, port: str):
-        super().__init__(host, database, user, password, port, type="postgresql")
+    def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str):
+        super().__init__(host, database, user, password, port, generated_id, type="postgresql")
 
-        self.backup_file = f"src/files/{uuid.uuid4()}.dump"
+        self.backup_file = f"{config.DATA_PATH}/files/{generated_id}.dump"
 
         self.command_restore = ['pg_restore',
                                 '--no-owner',

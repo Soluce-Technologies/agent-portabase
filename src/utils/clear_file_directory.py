@@ -2,19 +2,20 @@ import logging
 import os
 import shutil
 
+from settings import config
+
 logger = logging.getLogger('agent_logger')
 
 
-def clear_storage_file_path():
-    folder = 'src/files/'
-    for filename in os.listdir(folder):
-        file_path = os.path.join(folder, filename)
-        try:
-            if os.path.isfile(file_path) or os.path.islink(file_path):
-                os.unlink(file_path)
-            elif os.path.isdir(file_path):
-                shutil.rmtree(file_path)
-        except Exception as e:
-            logging.error('Failed to delete %s. Reason: %s' % (file_path, e))
-            return False
-    return True
+def delete_old_file(file_name):
+    folder = f'{config.DATA_PATH}/files/'
+    file_path = os.path.join(folder, f'{file_name}.dump')
+    try:
+        os.remove(file_path)
+        print(f"File {file_path} deleted successfully.")
+        return True
+    except FileNotFoundError:
+        print(f"File {file_path} does not exist.")
+        return True
+    except Exception as e:
+        print(f"Error deleting file: {e}")

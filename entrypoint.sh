@@ -15,7 +15,7 @@ redis-server --loglevel notice &>/dev/null &
 
 # Start Celery worker in the background
 echo "Starting Celery worker..."
-celery -A main worker --loglevel=INFO  &
+celery -A main worker --loglevel=info  &
 
 # Start Celery Beat in the background
 echo "Starting Celery Beat..."

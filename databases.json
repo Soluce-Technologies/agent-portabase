@@ -1,0 +1,13 @@
+{
+  "databases": [
+    {
+      "name": "devdb",
+      "type": "postgresql",
+      "username": "devuser",
+      "password": "changeme",
+      "port": 5432,
+      "host": "localhost",
+      "generatedId": "16678159-ff7e-4c97-8c83-0adeff214681"
+    }
+  ]
+}

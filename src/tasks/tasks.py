@@ -3,8 +3,9 @@ import logging
 from celery import shared_task
 from settings import config
 from utils.edge_key import decode_edge_key
+from utils.get_databases_config import get_databases_config
 from utils.status_request import status_request
-from .database import backup
+from .database import backup, restore
 
 logger = logging.getLogger('agent_logger')
 
@@ -14,21 +15,15 @@ def ping_server(self):
     logger.info("Starting task : Ping server")
     edge_key = config.EDGE_KEY
 
-    db_host = config.DB_HOST
-    db_port = config.DB_PORT
-    db_user = config.DB_USER
-    db_password = config.DB_PASSWORD
-    db_name = config.DB_NAME
-    db_type = config.DB_TYPE
+    databases_config, status = get_databases_config()
 
-    if edge_key is None:
-        error = "No EDGE_KEY provided in environment variables"
+    if not status:
+        error = "Error while getting databases config"
         logger.error(error)
         return {"error": error}
 
-    if any(value is None for value in [db_host, db_port, db_user, db_password, db_name, db_type]):
-        error = ("At least one of the database configuration values is missing [DB_HOST, DB_PORT, DB_USER, "
-                 "DB_PASSWORD, DB_NAME, DB_TYPE]")
+    if edge_key is None:
+        error = "No EDGE_KEY provided in environment variables"
         logger.error(error)
         return {"error": error}
 
@@ -39,15 +34,17 @@ def ping_server(self):
         logger.error(error)
         return {"error": "Invalid EDGE_KEY provided in environment variables"}
 
-    server_data, status = status_request(edge_key_data)
+    server_data, status = status_request(edge_key_data, databases_config.databases)
     if not status:
-        error = "Unable to ping server with provided EDGE_KEY"
+        error = "Unable to ping server"
         logger.error(error)
         return {"error": error}
 
-    if server_data['message']["backup"]["action"]:
-        backup.apply_async(args=(db_type.value,), ignore_result=True)
-    else:
-        logger.info("No task requested")
-
+    for database in server_data['databases']:
+        if database['data']["backup"]["action"]:
+            backup.apply_async(args=(database,), ignore_result=True)
+        elif database['data']['restore']['action']:
+            restore.apply_async(args=(database,), ignore_result=True)
+        else:
+            logger.info(f"No task requested for {database['generatedId']}")
     return {"message": True}

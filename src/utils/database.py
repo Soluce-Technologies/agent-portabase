@@ -1,13 +1,11 @@
 import logging
 import subprocess
 
-
 logger = logging.getLogger('agent_logger')
 
 
-
 class Database:
-    def __init__(self, host: str, database: str, user: str, password: str, port: str, type: str):
+    def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, type: str):
         """
         Initialize the Database instance.
 
@@ -16,6 +14,7 @@ class Database:
         :param user: Username.
         :param password: Password.
         :param port: Port number.
+        :param generated_id: generated_id.
         """
         self.connection_params = {
             "host": host,
@@ -25,7 +24,6 @@ class Database:
             "port": port,
             "type": type
         }
-
 
     @staticmethod
     def execute(command):
@@ -43,9 +41,9 @@ class Database:
                 stderr_line = process.stderr.readline()
 
                 if stdout_line:
-                    logging.info(stdout_line.strip())
+                    logger.info(stdout_line.strip())
                 if stderr_line:
-                    logging.info(stderr_line.strip())
+                    logger.info(stderr_line.strip())
 
                 # Break if both streams are closed and the process is complete
                 if not stdout_line and not stderr_line and process.poll() is not None:
@@ -57,5 +55,5 @@ class Database:
             return True, "Command executed successfully"
 
         except Exception as e:
-            logging.error(f"Exception occurred: {e}")
+            logger.error(f"Exception occurred: {e}")
             return False, f"Error: Exception during execution - {e}"

@@ -9,15 +9,10 @@ services:
       dockerfile: docker/Dockerfile
     volumes:
       - ./src:/app/src
+      - ./databases.json:/app/src/data/config/config.json
     environment:
-      - ENVIRONMENT=development
-      - EDGE_KEY=eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY20zenRoM3FyMDAwYmNxZmhsems3aDVpNyJ9
-      - DB_HOST=localhost
-      - DB_PORT=5432
-      - DB_USER=devuser
-      - DB_PASSWORD=changeme
-      - DB_NAME=devdb
-      - DB_TYPE=postgres
+      ENVIRONMENT: "development"
+      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY200MnppczJ0MDAwNGRjc25vMHg0NHVhcSJ9"
 
     network_mode: host #in development
 

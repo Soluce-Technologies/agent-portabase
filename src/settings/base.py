@@ -22,6 +22,9 @@ class Settings(BaseSettings):
 
     EDGE_KEY: Optional[str] = None
 
+    DATA_PATH: Optional[str] = "src/data"
+    DATABASES_CONFIG_FILE: Optional[str] = "config.json"
+
     DB_HOST: Optional[str] = None
     DB_PORT: Optional[str] = None
     DB_USER: Optional[str] = None
