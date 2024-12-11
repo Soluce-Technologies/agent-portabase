@@ -14,6 +14,7 @@ class PostgresDatabase(Database):
 
         self.command_restore = ['pg_restore',
                                 '--no-owner',
+                                '--no-privileges',
                                 '--clean',
                                 '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database),
                                 '-v',

@@ -3,7 +3,7 @@ from celery import shared_task
 from utils.clear_file_directory import delete_old_file
 from utils.get_database_instance import get_database_instance
 from utils.upload_restoration_file import upload_restoration_file
-from .result import send_result_backup
+from .result import send_result_backup, send_result_restoration
 
 logger = logging.getLogger('agent_logger')
 
@@ -38,11 +38,18 @@ def restore(data):
     db_type = data['dbms']
     generated_id = data['generatedId']
     url = data['data']['restore']['file']
-    print(data)
     result = delete_old_file(generated_id, "restorations")
     if result:
         result_upload, status = upload_restoration_file(url, generated_id)
-    return {"message": True}
+        if status:
+            database = get_database_instance(db_type, generated_id)
+            if database :
+                status, result = database.restore()
+                if status:
+                    logger.info("Restore task completed successfully")
+                    send_result_restoration.apply_async(args=(generated_id, "success"), ignore_result=True)
+    send_result_restoration.apply_async(args=(generated_id, "failed"), ignore_result=True)
+    return {"message": False}
 
 
 @shared_task()

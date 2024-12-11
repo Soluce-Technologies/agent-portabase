@@ -1,79 +1,38 @@
-import threading
+import logging
 
 import redbeat
-from celery.beat import PersistentScheduler
 from celery.schedules import crontab
 from redbeat.schedulers import RedBeatConfig
-
 import main
-from tasks.database import periodic_backup
 from utils.get_nested_value import get_nested_value
-from celery import beat
-from redbeat import RedBeatSchedulerEntry, RedBeatScheduler
+from redbeat import RedBeatSchedulerEntry
 
-
-#
-# def check_and_update_cron(data):
-#     """
-#     Checks if the crontab exists and updates the crontab value if needed.
-#     :return:
-#     """
-#     cron_value = get_nested_value(data, 'data', 'backup', 'cron')
-#     crontab_schedule = crontab(minute="*", hour="*", day_of_week="*", day_of_month="*", month_of_year="*")
-#
-#     task_name = 'periodic.backup'
-#     task = periodic_backup
-#     task_exist = check_periodic_task(task_name)
-#     if not task_exist:
-#         create_periodic_task(task_name, task, crontab_schedule)
-#
-#
-# def check_periodic_task(task_name):
-#     task = main.app.tasks.get(task_name)
-#     if task:
-#         print(f"Task '{task_name}' exists")
-#         scheduler = beat.Scheduler(app=main.app)
-#         schedule = scheduler.get_schedule().get(task_name)
-#         if schedule:
-#             print(f"Cron schedule: {schedule.schedule}")
-#         else:
-#             print(f"No schedule found for task '{task_name}'")
-#
-#         return True
-#     else:
-#         print(f"Task '{task_name}' does not exist")
-#         return False
-#
-#
-# def create_periodic_task(task_name, task, crontab_schedule):
-#     try:
-#         main.app.add_periodic_task(
-#             crontab_schedule,
-#             task,
-#             name=task_name
-#         )
-#         main.app.autodiscover_tasks()
-#         print(f"Periodic task '{task_name}' created successfully")
-#     except Exception as e:
-#         print(f"Error creating periodic task '{task_name}': {e}")
-
+logger = logging.getLogger('agent_logger')
 
 def check_and_update_cron(data):
     cron_value = get_nested_value(data, 'data', 'backup', 'cron')
-    crontab_schedule = crontab(minute="*", hour="*", day_of_week="*", day_of_month="*", month_of_year="*")
+    if cron_value is None:
+        return False
+
+    crontab_parts = cron_value.split() if cron_value else ["*", "*", "*", "*", "*"]
+    crontab_schedule = get_crontab_object(crontab_parts)
     task_name = 'periodic.backup'
+    format_task_name = f"redbeat:{task_name}"
     task = "tasks.database.periodic_backup"
 
     schedule = get_schedules()
-    print(schedule)
-    if f"redbeat:{task_name}" in schedule:
-        print(f"Task '{task_name}' exists")
-        new_cron = crontab(minute="*", hour="*", day_of_week="*", day_of_month="*", month_of_year="*/2")
-        update_periodic_task(task_name, task, new_cron)
+    logger.info(f'crontab schedule: {schedule}')
+
+    if format_task_name in schedule:
+        logger.info(f"Task '{task_name}' exists")
+        actual_cron = get_crontab_as_array(schedule[format_task_name])
+        if not compare_cron_arrays(actual_cron, crontab_parts):
+            new_cron = get_crontab_object(crontab_parts)
+            update_periodic_task(task_name, task, new_cron)
+
     else:
         add_task(task_name, task, crontab_schedule)
-        print(f"Periodic task '{task_name}' created successfully")
-
+        logger.info(f"Periodic task '{task_name}' created successfully")
 
 
 def add_task(name, task, schedule):
@@ -84,27 +43,10 @@ def add_task(name, task, schedule):
 def update_periodic_task(task_name, task, crontab_schedule):
     try:
         add_task(task_name, task, crontab_schedule)
-        print(f"Periodic task '{task_name}' updated successfully")
+        logger.info(f"Periodic task '{task_name}' updated successfully")
     except Exception as e:
         print(e)
-
-
-#
-# def create_periodic_task(task_name, task, crontab_schedule):
-#     try:
-#         main.app.add_periodic_task(
-#             crontab_schedule,
-#             task,
-#             name=task_name
-#         )
-#         print(f"Periodic task '{task_name}' created successfully")
-#     except Exception as e:
-#         print(f"Error creating periodic task '{task_name}': {e}")
-#
-#
-# def start_scheduler():
-#     service = beat.Service(app=main.app)
-#     service.start()
+        logger.info(e)
 
 def get_schedules() -> dict:
     config = RedBeatConfig(main.app)
@@ -113,6 +55,24 @@ def get_schedules() -> dict:
     elements = redis.zrange(schedule_key, 0, -1, withscores=False)
     entries = {el: RedBeatSchedulerEntry.from_key(key=el, app=main.app) for el in elements}
     return entries
+
+def get_crontab_as_array(entry):
+    crontab_schedule = entry.schedule  # Access the schedule
+    return [
+        crontab_schedule._orig_minute,
+        crontab_schedule._orig_hour,
+        crontab_schedule._orig_day_of_month,
+        crontab_schedule._orig_month_of_year,
+        crontab_schedule._orig_day_of_week,
+    ]
+
+def get_crontab_object(array_entry):
+    return crontab(minute=array_entry[0], hour=array_entry[1], day_of_week=array_entry[2], day_of_month=array_entry[3], month_of_year=array_entry[4])
+
+
+def compare_cron_arrays(cron1, cron2):
+    return cron1 == cron2
+
 
 #do not delete
 # @app.task(bind=True)
@@ -127,3 +87,4 @@ def get_schedules() -> dict:
 #         entry.delete()
 #
 #     log_schedule_execution(self)
+# Function to format crontab into an array
