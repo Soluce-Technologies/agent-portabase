@@ -17,13 +17,14 @@ authors = [
 requires-python = ">=3.10,<4.0"
 
 dependencies = [
-    "celery>=5.4.0",
+    "celery[redis]>=5.4.0",
     "kombu>=5.4.2",
     "python-dotenv>=1.0,<1.1",
     "pydantic-settings>=2.6.1",
     "redis>=5.2.0",
     "watchdog>=6.0.0",
-    "requests>=2.32.3"
+    "requests>=2.32.3",
+    "celery-redbeat>=2.2.0",
 ]
 classifiers = [
     #   3 - Alpha

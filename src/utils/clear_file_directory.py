@@ -7,8 +7,8 @@ from settings import config
 logger = logging.getLogger('agent_logger')
 
 
-def delete_old_file(file_name):
-    folder = f'{config.DATA_PATH}/files/'
+def delete_old_file(file_name, kind):
+    folder = f'{config.DATA_PATH}/files/{kind}/'
     file_path = os.path.join(folder, f'{file_name}.dump')
     try:
         os.remove(file_path)

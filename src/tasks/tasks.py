@@ -2,6 +2,7 @@ import logging
 
 from celery import shared_task
 from settings import config
+from utils.cron import check_and_update_cron
 from utils.edge_key import decode_edge_key
 from utils.get_databases_config import get_databases_config
 from utils.status_request import status_request
@@ -39,6 +40,9 @@ def ping_server(self):
         error = "Unable to ping server"
         logger.error(error)
         return {"error": error}
+
+    # check and update if necessary the cron for backup
+    check_and_update_cron(server_data)
 
     for database in server_data['databases']:
         if database['data']["backup"]["action"]:

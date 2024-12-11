@@ -7,16 +7,19 @@ from logging.config import dictConfig
 from celery import Celery
 from celery.signals import worker_process_init
 from kombu import Exchange, Queue
+from redbeat import RedBeatSchedulerEntry
 
 from logging_config import setup_logging
 from settings import config
 from celery.schedules import crontab
 from tasks.tasks import ping_server
+# from utils.add_task import add_task
 from utils.init import initialize_directories
 
 
 def create_celery_app():
     app = Celery('portabase-agent')
+
     app.conf.broker_url = config.CELERY_BROKER_URL
     app.conf.result_backend = config.CELERY_RESULT_BACKEND
     app.conf.broker_connection_retry_on_startup = True
@@ -77,4 +80,3 @@ def run_initialization():
 
 
 app = run_initialization()
-

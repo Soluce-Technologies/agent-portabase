@@ -9,14 +9,15 @@ class PostgresDatabase(Database):
     def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str):
         super().__init__(host, database, user, password, port, generated_id, type="postgresql")
 
-        self.backup_file = f"{config.DATA_PATH}/files/{generated_id}.dump"
+        self.backup_file = f"{config.DATA_PATH}/files/backups/{generated_id}.dump"
+        self.restore_file = f"{config.DATA_PATH}/files/restorations/{generated_id}.dump"
 
         self.command_restore = ['pg_restore',
                                 '--no-owner',
                                 '--clean',
                                 '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database),
                                 '-v',
-                                self.backup_file]
+                                self.restore_file]
 
         self.command_backup = ['pg_dump',
                                '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database),

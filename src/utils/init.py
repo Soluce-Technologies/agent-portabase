@@ -29,9 +29,13 @@ def initialize_directories() -> bool:
     :return: bool
     """
     try:
-        file_path = f"{config.DATA_PATH}/files"
-        if not os.path.exists(file_path):
-            os.makedirs(file_path)
+        file_path_backups = f"{config.DATA_PATH}/files/backups"
+        file_path_restorations = f"{config.DATA_PATH}/files/restorations"
+        if not os.path.exists(file_path_backups):
+            os.makedirs(file_path_backups)
+
+        if not os.path.exists(file_path_restorations):
+            os.makedirs(file_path_restorations)
 
         return True
     except Exception as e:

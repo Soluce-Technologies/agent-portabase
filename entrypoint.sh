@@ -19,7 +19,8 @@ celery -A main worker --loglevel=info  &
 
 # Start Celery Beat in the background
 echo "Starting Celery Beat..."
-celery -A main beat --loglevel=info &
+#celery -A main beat --loglevel=info &
+celery -A main beat -S redbeat.RedBeatScheduler --loglevel=info &
 
 # Wait for all background processes
 wait

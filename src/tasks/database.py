@@ -2,6 +2,7 @@ import logging
 from celery import shared_task
 from utils.clear_file_directory import delete_old_file
 from utils.get_database_instance import get_database_instance
+from utils.upload_restoration_file import upload_restoration_file
 from .result import send_result_backup
 
 logger = logging.getLogger('agent_logger')
@@ -13,8 +14,7 @@ def backup(data):
 
     db_type = data['dbms']
     generated_id = data['generatedId']
-
-    result = delete_old_file(generated_id)
+    result = delete_old_file(generated_id, "backups")
     if result:
         database = get_database_instance(db_type, generated_id)
         if database:
@@ -35,4 +35,17 @@ def backup(data):
 @shared_task()
 def restore(data):
     logger.info("Starting task : Restore")
+    db_type = data['dbms']
+    generated_id = data['generatedId']
+    url = data['data']['restore']['file']
+    print(data)
+    result = delete_old_file(generated_id, "restorations")
+    if result:
+        result_upload, status = upload_restoration_file(url, generated_id)
+    return {"message": True}
+
+
+@shared_task()
+def periodic_backup():
+    print("Starting periodic backup")
     return {"message": True}
