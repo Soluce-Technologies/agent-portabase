@@ -41,10 +41,11 @@ def ping_server(self):
         logger.error(error)
         return {"error": error}
 
-    # check and update if necessary the cron for backup
-    check_and_update_cron(server_data)
-
     for database in server_data['databases']:
+
+        # check and update if necessary the cron for backup
+        check_and_update_cron(database)
+
         if database['data']["backup"]["action"]:
             backup.apply_async(args=(database,), ignore_result=True)
         elif database['data']['restore']['action']:

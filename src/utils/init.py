@@ -29,13 +29,16 @@ def initialize_directories() -> bool:
     :return: bool
     """
     try:
-        file_path_backups = f"{config.DATA_PATH}/files/backups"
-        file_path_restorations = f"{config.DATA_PATH}/files/restorations"
-        if not os.path.exists(file_path_backups):
-            os.makedirs(file_path_backups)
 
-        if not os.path.exists(file_path_restorations):
-            os.makedirs(file_path_restorations)
+        base_path = f"{config.DATA_PATH}/files"
+        directories = [
+            f"{base_path}/backups",
+            f"{base_path}/backups/automatic",
+            f"{base_path}/backups/manual",
+            f"{base_path}/restorations",
+        ]
+        for directory in directories:
+            os.makedirs(directory, exist_ok=True)
 
         return True
     except Exception as e:

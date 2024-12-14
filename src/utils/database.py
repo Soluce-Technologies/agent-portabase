@@ -5,7 +5,7 @@ logger = logging.getLogger('agent_logger')
 
 
 class Database:
-    def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, type: str):
+    def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, method: str, type: str):
         """
         Initialize the Database instance.
 

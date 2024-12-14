@@ -9,7 +9,7 @@ logger = logging.getLogger('agent_logger')
 
 
 @shared_task()
-def send_result_backup(file_path: str, generated_id: str, result: str):
+def send_result_backup(file_path: str, generated_id: str, result: str, method: str):
     logger.info("Starting task : Sending result backup")
 
     try:
@@ -22,8 +22,12 @@ def send_result_backup(file_path: str, generated_id: str, result: str):
         form_data = {
             "generatedId": (None, generated_id),  # Use (None, value) for non-file fields
             "status": (None, result),
+            "method": (None, method),
             "file": (f"{generated_id}.dump", open(file_path, "rb"), "application/octet-stream")
         }
+
+        print(form_data)
+
         response = requests.post(url=url, files=form_data)
         response.raise_for_status()
         message = response.json()
