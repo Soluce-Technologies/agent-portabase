@@ -3,6 +3,7 @@ from typing import List, Optional
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import find_dotenv
+from pathlib import Path
 
 
 class DBType(str, Enum):
@@ -22,7 +23,7 @@ class Settings(BaseSettings):
 
     EDGE_KEY: Optional[str] = None
 
-    DATA_PATH: Optional[str] = "src/data"
+    DATA_PATH: Optional[str] = f"/app/src/data"
     DATABASES_CONFIG_FILE: Optional[str] = "config.json"
 
     DB_HOST: Optional[str] = None

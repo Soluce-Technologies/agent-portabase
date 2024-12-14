@@ -16,6 +16,7 @@ def backup_database(generated_id: str, db_type: str, method: str):
             status, result = database.ping()
             if status:
                 status, result, file = database.backup()
+                print(file)
                 if status:
                     logger.info(f"{result} : {file}")
                     logger.info("Backup task completed successfully")

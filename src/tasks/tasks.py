@@ -41,6 +41,7 @@ def ping_server(self):
         logger.error(error)
         return {"error": error}
 
+
     for database in server_data['databases']:
 
         # check and update if necessary the cron for backup
