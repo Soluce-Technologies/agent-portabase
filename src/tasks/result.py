@@ -23,8 +23,12 @@ def send_result_backup(file_path: str, generated_id: str, result: str, method: s
             "generatedId": (None, generated_id),  # Use (None, value) for non-file fields
             "status": (None, result),
             "method": (None, method),
-            "file": (f"{generated_id}.dump", open(file_path, "rb"), "application/octet-stream")
         }
+
+        if file_path:  # Check if file_path is not an empty string
+            form_data["file"] = (f"{generated_id}.dump", open(file_path, "rb"), "application/octet-stream")
+        else:
+            form_data["file"] = (None, "")  # Use an empty value instead of a file
 
         print(form_data)
 

@@ -1,17 +1,15 @@
-name: agent-portabase
+name: agent-portabase-prod
 
 services:
   app:
-    container_name: agent-portabase
+    container_name: agent-portabase-prod
     restart: always
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
+    image: solucetechnologies/agent-portabase:release
     volumes:
-      - ./src:/app/src
       - ./databases.json:/app/src/data/config/config.json
     environment:
       ENVIRONMENT: "development"
+
       EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY200b2dscTBkMDAwNzV0NDFwYXN2djZ3dCJ9"
     network_mode: host #in development
 
@@ -20,7 +18,7 @@ services:
     ports:
       - "5430:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - postgres-data-prod:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
@@ -29,4 +27,4 @@ services:
     network_mode: host #in development
 
 volumes:
-  postgres-data:
+  postgres-data-prod:
