@@ -19,7 +19,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" > /et
     && apt-get update
 
 # Install PostgreSQL client (latest available version, likely 16.x)
-RUN apt-get install -y postgresql-client \
+RUN apt-get install -y postgresql-client libpq5 \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
