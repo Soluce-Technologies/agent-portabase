@@ -14,6 +14,7 @@ def backup_database(generated_id: str, db_type: str, method: str):
         database = get_database_instance(db_type, generated_id, method)
         if database:
             status, result = database.ping()
+            logger.info(f"{result}")
             if status:
                 status, result, file = database.backup()
                 print(file)
