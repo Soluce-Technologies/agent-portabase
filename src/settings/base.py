@@ -14,11 +14,11 @@ class DBType(str, Enum):
 
 
 class Settings(BaseSettings):
-    REDIS_SERVER: str
-    REDIS_PORT: int
+    REDIS_SERVER: Optional[str] = "localhost"
+    REDIS_PORT: Optional[int] = 6379
 
-    CELERY_BROKER_URL: str
-    CELERY_RESULT_BACKEND: str
+    CELERY_BROKER_URL: Optional[str] = "redis://localhost:6379/0"
+    CELERY_RESULT_BACKEND: Optional[str] = "redis://localhost:6379/0"
 
     EDGE_KEY: Optional[str] = None
 
@@ -31,6 +31,6 @@ class Settings(BaseSettings):
     DB_PASSWORD: Optional[str] = None
     DB_NAME: Optional[str] = None
 
-    DB_TYPE: Optional[DBType] = None  # Use the enum here
+    DB_TYPE: Optional[DBType] = None
 
     model_config = SettingsConfigDict(env_file=find_dotenv(), extra='allow')
