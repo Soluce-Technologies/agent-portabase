@@ -24,7 +24,10 @@ RUN apt-get install -y postgresql-client libpq5 \
     && rm -rf /var/lib/apt/lists/*
 
 # Configure the dynamic linker for libpq
-RUN echo "/usr/lib/x86_64-linux-gnu" > /etc/ld.so.conf.d/libpq.conf && ldconfig
+RUN echo "/usr/lib/x86_64-linux-gnu" | tee /etc/ld.so.conf.d/libpq.conf && \
+    ldconfig && \
+    ldconfig -p | grep libpq
+
 
 ENV PYTHONUNBUFFERED=1
 
