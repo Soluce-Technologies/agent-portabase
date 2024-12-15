@@ -9,6 +9,12 @@ echo " /_/    \____/_/   \__/\__,_/_.___/\__,_/____/\___/  /_/  |_\__, /\___/_/ 
 echo "                                                           /____/                   "
 
 
+echo "/usr/lib/x86_64-linux-gnu" | tee /etc/ld.so.conf.d/libpq.conf
+ldconfig
+ldconfig -p | grep libpq
+ldd /usr/lib/postgresql/17/bin/pg_isready
+
+
 # Start Redis in the background
 echo "Starting Redis server..."
 redis-server --loglevel notice &>/dev/null &
