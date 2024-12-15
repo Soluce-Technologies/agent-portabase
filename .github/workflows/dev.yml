@@ -4,6 +4,9 @@ on:
     branches:
       - main
 
+    paths:
+      - "docker/Dockerfile"
+
 jobs:
   publish_images:
     runs-on: ubuntu-latest
@@ -12,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
       - name: build image
         run: |
-          docker build ./docker/Dockerfile -t solucetechnologies/agent-portabase:dev
+          docker build . -t solucetechnologies/agent-portabase:dev
       - name: push image to docker hub
         run: |
           docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
