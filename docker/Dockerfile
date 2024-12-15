@@ -1,5 +1,5 @@
 # Stage 1: Build the application environment
-FROM python:3.13-slim-bookworm as builder
+FROM python:3.13-slim-bookworm AS builder
 
 # Install system packages and Redis
 RUN apt-get update && apt-get install -y \
