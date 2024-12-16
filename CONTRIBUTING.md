@@ -1,8 +1,8 @@
 ---
 
-# Contributing to [Project Name]
+# Contributing to Portabase Agent
 
-Thank you for considering contributing to **[Portabase Agent]!** 🎉 Contributions help make this project better for everyone.
+Thank you for considering contributing to **Portabase Agent!** 🎉 Contributions help make this project better for everyone.
 
 Please take a moment to review this guide. It will help you understand how to contribute effectively.
 
@@ -26,15 +26,14 @@ Please take a moment to review this guide. It will help you understand how to co
 
 2. **Clone the repository**  
    ```bash
-   git clone https://github.com/<your-username>/<repo-name>.git
-   cd <repo-name>
+   git clone https://github.com/Soluce-Technologies/agent-portabase
    ```
 
 3. **Set up the development environment**  
    Follow the steps in the `README.md` to install dependencies and configure the project.
 
 4. **Create a branch**  
-   Use a feature-specific branch to work on changes.  
+   Use the feature branch to work on changes.  
    ```bash
    git checkout -b feature/<feature-name>
    ```
@@ -85,7 +84,7 @@ If you encounter a bug or have a suggestion for improvement, follow these steps:
 
 - Follow the [specific coding style guide] (e.g., Prettier, ESLint, PEP8).  
 - Use meaningful variable names and include comments where necessary.  
-- Run tests before submitting your changes.  
+- Tests before submitting your changes.  
 
 ---
 
@@ -108,6 +107,4 @@ If you encounter a bug or have a suggestion for improvement, follow these steps:
 
 Thank you for contributing! 🙌
 
---- 
-
-If you’d like more specific details for your project (e.g., tools, frameworks, or testing methods), let me know!
+---

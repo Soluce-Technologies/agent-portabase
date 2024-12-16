@@ -111,6 +111,7 @@ Installation steps in order to use it locally and work on some features improvem
 ## Roadmap
 
 - [ ] Add Changelog
+- [ ] Add tests procedure
 - [ ] Add Release File
 - [ ] Security improvements
 - [ ] Multi db support
