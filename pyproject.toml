@@ -8,7 +8,7 @@ packages = ["src"]
 
 [project]
 name = "portabase-agent"
-version = "0.1.0"
+version = "1.0.0"
 description = "THe portabase agent project"
 authors = [
     { name = "Charles Gauthereau", email = "charles.gauthereau@soluce-technologies.com" },
