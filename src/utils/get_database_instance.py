@@ -1,5 +1,4 @@
-from settings import config
-from utils.get_databases_config import get_databases_config, DatabasesConfig, DatabaseConfig
+from utils.get_databases_config import get_databases_config, DatabaseConfig
 from utils.postgres import PostgresDatabase
 
 

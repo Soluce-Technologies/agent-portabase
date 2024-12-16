@@ -1,9 +1,6 @@
 import logging
 import requests
-
-from settings import config
 from utils.edge_key import EdgeKey
-from utils.get_config import get_config
 from utils.get_databases_config import DatabaseConfig
 
 logger = logging.getLogger('agent_logger')

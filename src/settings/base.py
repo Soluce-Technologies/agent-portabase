@@ -1,9 +1,7 @@
 from enum import Enum
 from typing import List, Optional
-
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import find_dotenv
-from pathlib import Path
 
 
 class DBType(str, Enum):

@@ -1,19 +1,12 @@
-import logging
 import os
 import sys
 import warnings
-from logging.config import dictConfig
-
 from celery import Celery
-from celery.signals import worker_process_init
 from kombu import Exchange, Queue
-from redbeat import RedBeatSchedulerEntry
-
 from logging_config import setup_logging
 from settings import config
 from celery.schedules import crontab
 from tasks.tasks import ping_server
-# from utils.add_task import add_task
 from utils.init import initialize_directories
 
 

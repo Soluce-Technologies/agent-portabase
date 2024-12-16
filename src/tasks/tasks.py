@@ -1,5 +1,4 @@
 import logging
-
 from celery import shared_task
 from settings import config
 from utils.cron import check_and_update_cron
@@ -40,7 +39,6 @@ def ping_server(self):
         error = "Unable to ping server"
         logger.error(error)
         return {"error": error}
-
 
     for database in server_data['databases']:
 

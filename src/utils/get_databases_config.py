@@ -2,7 +2,6 @@ import logging
 import json
 from pydantic import BaseModel, ValidationError
 from typing import List
-
 from settings import config
 from utils.format_validation import format_validation_error
 

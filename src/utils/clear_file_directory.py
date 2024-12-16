@@ -1,7 +1,5 @@
 import logging
 import os
-import shutil
-
 from settings import config
 
 logger = logging.getLogger('agent_logger')

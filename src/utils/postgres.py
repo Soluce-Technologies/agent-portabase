@@ -1,8 +1,5 @@
-import subprocess
-
 from settings import config
 from utils.database import Database
-import uuid
 
 
 class PostgresDatabase(Database):

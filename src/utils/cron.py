@@ -1,5 +1,4 @@
 import logging
-
 import redbeat
 from celery.schedules import crontab
 from redbeat.schedulers import RedBeatConfig, RedBeatScheduler
