@@ -12,7 +12,7 @@ services:
       - ./databases.json:/app/src/data/config/config.json
     environment:
       ENVIRONMENT: "development"
-      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY200b2dscTBkMDAwNzV0NDFwYXN2djZ3dCJ9"
+      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY200cXc4MGNoMDAwNzF4MjhlMmpmcW5wcCJ9"
     network_mode: host #in development
 
   db:
