@@ -1,12 +1,9 @@
 name: Publish Docker image for release
 
 on:
-#  release:
-#    types: [published]
+  release:
+    types: [published]
 
-  push:
-    branches:
-      - release
 
 
 jobs:
