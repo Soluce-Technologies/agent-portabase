@@ -9,6 +9,16 @@ class PostgresDatabase(Database):
         self.backup_file = f"{config.DATA_PATH}/files/backups/{method}/{generated_id}.dump"
         self.restore_file = f"{config.DATA_PATH}/files/restorations/{generated_id}.dump"
 
+        self.terminate_connections_cmd = [
+            'psql',
+            '-U', self.user,
+            '-d', 'postgres',
+            '-h', self.host,
+            '-p', self.port,
+            '-c', f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{self.database}' AND pid <> pg_backend_pid();"
+        ]
+
+
         self.command_restore = ['pg_restore',
                                 '--no-owner',
                                 '--no-privileges',
@@ -35,6 +45,10 @@ class PostgresDatabase(Database):
         return status, result, self.backup_file
 
     def restore(self):
+
+        self.execute(self.terminate_connections_cmd)
+
+
         return self.execute(self.command_restore)
 
     def ping(self):
