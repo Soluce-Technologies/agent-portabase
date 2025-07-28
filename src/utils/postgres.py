@@ -15,7 +15,7 @@ class PostgresDatabase(Database):
                                 '--clean',
                                 '--if-exists',
                                 '--create',
-                                '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database),
+                                '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, "postgres"),
                                 '-v',
                                 self.restore_file]
 
