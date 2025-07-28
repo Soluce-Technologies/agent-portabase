@@ -11,11 +11,11 @@ class PostgresDatabase(Database):
 
         self.terminate_connections_cmd = [
             'psql',
-            '-U', self.user,
+            '-U', user,
             '-d', 'postgres',
-            '-h', self.host,
-            '-p', self.port,
-            '-c', f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{self.database}' AND pid <> pg_backend_pid();"
+            '-h', host,
+            '-p', port,
+            '-c', f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{database}' AND pid <> pg_backend_pid();"
         ]
 
 
