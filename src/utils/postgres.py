@@ -1,3 +1,5 @@
+import os
+
 from settings import config
 from utils.database import Database
 
@@ -9,15 +11,17 @@ class PostgresDatabase(Database):
         self.backup_file = f"{config.DATA_PATH}/files/backups/{method}/{generated_id}.dump"
         self.restore_file = f"{config.DATA_PATH}/files/restorations/{generated_id}.dump"
 
+        self.password = password
+
         self.terminate_connections_cmd = [
             'psql',
             '-U', user,
             '-d', 'postgres',
             '-h', host,
             '-p', port,
-            '-c', f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{database}' AND pid <> pg_backend_pid();"
+            '-c',
+            f"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname = '{database}' AND pid <> pg_backend_pid();"
         ]
-
 
         self.command_restore = ['pg_restore',
                                 '--no-owner',
@@ -45,9 +49,10 @@ class PostgresDatabase(Database):
         return status, result, self.backup_file
 
     def restore(self):
+        env = os.environ.copy()
+        env["PGPASSWORD"] = self.password
 
-        self.execute(self.terminate_connections_cmd)
-
+        self.execute(self.terminate_connections_cmd, env=env)
 
         return self.execute(self.command_restore)
 

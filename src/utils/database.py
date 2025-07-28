@@ -26,13 +26,14 @@ class Database:
         }
 
     @staticmethod
-    def execute(command):
+    def execute(command, env=None):
         try:
             process = subprocess.Popen(
                 command,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True,  # Automatically decode bytes to strings
+                env=env
             )
 
             # Stream stdout and stderr in real time
