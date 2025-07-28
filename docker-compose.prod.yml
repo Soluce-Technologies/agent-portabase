@@ -4,13 +4,13 @@ services:
   app:
     container_name: agent-portabase-prod
     restart: always
-    image: solucetechnologies/agent-portabase:dev
+    image: solucetechnologies/agent-portabase:latest
     volumes:
       - ./databases.json:/app/src/data/config/config.json
     environment:
       ENVIRONMENT: "development"
 
-      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiY200b2dscTBkMDAwNzV0NDFwYXN2djZ3dCJ9"
+      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiYjZlMWJhOTAtZjJhMS00YWFhLWFjOTktM2RkN2VjMzVmZDczIn0"
     network_mode: host #in development
 
   db:

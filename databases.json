@@ -17,6 +17,25 @@
       "port": 5432,
       "host": "localhost",
       "generatedId": "16678156-ff7e-4c97-8c83-0adeff214681"
+    },
+    {
+      "name": "devdb",
+      "type": "postgresql",
+      "username": "devuser",
+      "password": "changeme",
+      "port": 5432,
+      "host": "localhost",
+      "generatedId": "16678146-ff7e-4c97-8c83-0adeff214681"
+    },
+    {
+      "name": "devdb",
+      "type": "postgresql",
+      "username": "devuser",
+      "password": "changeme",
+      "port": 5432,
+      "host": "localhost",
+      "generatedId": "16678140-ff7e-4c97-8c83-0adeff214681"
     }
+
   ]
 }

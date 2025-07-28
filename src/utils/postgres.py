@@ -13,6 +13,8 @@ class PostgresDatabase(Database):
                                 '--no-owner',
                                 '--no-privileges',
                                 '--clean',
+                                '--if-exists',
+                                '--create',
                                 '--dbname=postgresql://{}:{}@{}:{}/{}'.format(user, password, host, port, database),
                                 '-v',
                                 self.restore_file]
