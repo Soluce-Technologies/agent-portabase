@@ -61,6 +61,8 @@ COPY ./src /app/src
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen
 
+COPY server_public.pem /app/server_public.pem
+
 # Copy entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh

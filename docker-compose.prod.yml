@@ -10,7 +10,7 @@ services:
     environment:
       ENVIRONMENT: "development"
 
-      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiYjZlMWJhOTAtZjJhMS00YWFhLWFjOTktM2RkN2VjMzVmZDczIn0"
+      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiYzMxYmQ4ZmYtMzU0ZC00ZmRhLTg5NGEtNzU0NWQ2NDdkZWJhIn0"
     network_mode: host #in development
 
   db:

@@ -15,6 +15,13 @@ ldconfig -p | grep libpq
 ldd /usr/lib/postgresql/17/bin/pg_isready
 
 
+# Validate backup script
+if [ ! -f "/app/server_public.pem" ]; then
+    echo "[ERROR] /app/server_public.pem not found!"
+    exit 1
+fi
+
+
 # Start Redis in the background
 echo "Starting Redis server..."
 redis-server --loglevel notice &>/dev/null &

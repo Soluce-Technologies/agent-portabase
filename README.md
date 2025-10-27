@@ -62,6 +62,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 Portabase Agent is the agent service use with Portabase Server. This service is for backup/restore db instances.
@@ -69,24 +70,23 @@ Portabase Agent is the agent service use with Portabase Server. This service is 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ### Built With
 
 * [![Python][Python]][Python-url]
 * [![Celery][Celery]][Celery-url]
-
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 ### Prerequisites
 
-Sync your uv config 
+Sync your uv config
+
 * npm
   ```sh
   uv sync
@@ -109,6 +109,7 @@ Installation steps in order to use it locally and work on some features improvem
 
 
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [ ] Add Changelog
@@ -116,22 +117,32 @@ Installation steps in order to use it locally and work on some features improvem
 - [ ] Add Release File
 - [ ] Security improvements
 - [ ] Multi db support
-    - [x] PostgreSQL 
+    - [x] PostgreSQL
     - [ ] MongoDB
     - [ ] MySQL
 
-See the [open issues](https://github.com/Soluce-Technologies/agent-portabase/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/Soluce-Technologies/agent-portabase/issues) for a full list of proposed
+features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Database Test Seed
 
+Using Docker
+
+```bash
+docker exec -i -e PGPASSWORD=<password> <container_name> psql -U <USER> -d <DATABASE> < ./scripts/seed.sql
+```
 
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any
+contributions you make are **greatly appreciated**.
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also
+simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
@@ -148,7 +159,6 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 ## Memo
 
 If you're using Semantic Versioning (SemVer) to version your Docker images, you can use the following format:
@@ -159,20 +169,23 @@ If you're using Semantic Versioning (SemVer) to version your Docker images, you 
 
 
 <!-- LICENSE -->
+
 ## License
 
-Distributed under the  Apache License. See `LICENSE.txt` for more information.
+Distributed under the Apache License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTACT -->
+
 ## Contact
 
 Killian Larcher - killian.larcher@soluce-technologies.com
 Charles Gauthereau - charles.gauthereau@soluce-technologies.com
 
-Project Link: [https://github.com/Soluce-Technologies/agent-portabase](https://github.com/Soluce-Technologies/agent-portabase)
+Project
+Link: [https://github.com/Soluce-Technologies/agent-portabase](https://github.com/Soluce-Technologies/agent-portabase)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -180,6 +193,9 @@ Project Link: [https://github.com/Soluce-Technologies/agent-portabase](https://g
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
 [Python]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
+
 [Celery]: https://img.shields.io/static/v1?style=for-the-badge&message=Celery&color=37814A&logo=Celery&logoColor=FFFFFF&label
+
 [Python-url]: https://www.python.org/
+
 [Celery-url]: https://docs.celeryq.dev/en/stable/

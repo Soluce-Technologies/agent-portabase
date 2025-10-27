@@ -1,3 +1,4 @@
 /.idea/
 .env
 /src/data/files/
+server_public.pem
