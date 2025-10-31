@@ -11,6 +11,7 @@ logger = logging.getLogger('agent_logger')
 class EdgeKey(BaseModel):
     serverUrl: str
     agentId: str
+    publicKey: str
 
 
 def decode_edge_key(edge_key: str) -> Tuple[EdgeKey | str, bool]:
@@ -26,7 +27,7 @@ def decode_edge_key(edge_key: str) -> Tuple[EdgeKey | str, bool]:
         logger.error(error)
         return error, False
 
-    if 'serverUrl' in edge_key_data and 'agentId' in edge_key_data:
+    if 'serverUrl' in edge_key_data and 'agentId' in edge_key_data and 'publicKey' in edge_key_data:
         return EdgeKey.model_validate(edge_key_data), True
     else:
         return "EDGE_KEY INVALID", False

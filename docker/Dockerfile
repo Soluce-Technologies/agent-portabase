@@ -2,7 +2,8 @@
 FROM python:3.13-slim-bookworm AS builder
 
 # Install system packages and Redis
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    tzdata \
     redis-server \
     ca-certificates \
     build-essential \
@@ -61,7 +62,7 @@ COPY ./src /app/src
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --frozen
 
-COPY server_public.pem /app/server_public.pem
+#COPY server_public.pem /app/server_public.pem
 
 # Copy entrypoint script
 COPY entrypoint.sh /app/entrypoint.sh

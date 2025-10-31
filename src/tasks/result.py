@@ -62,8 +62,9 @@ def send_result_backup(file_path: str, generated_id: str, result: str, method: s
         }
 
         # Load server public key
-        with open("/app/server_public.pem", "rb") as f:
-            server_pub = serialization.load_pem_public_key(f.read())
+        # with open("/app/server_public.pem", "rb") as f:
+        #     server_pub = serialization.load_pem_public_key(f.read())
+        server_pub = serialization.load_pem_public_key(edge_key_data.publicKey.encode("utf-8"))
 
         aes_key = os.urandom(32)  # 256-bit key, AES key
 

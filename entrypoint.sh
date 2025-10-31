@@ -15,11 +15,23 @@ ldconfig -p | grep libpq
 ldd /usr/lib/postgresql/17/bin/pg_isready
 
 
-# Validate backup script
-if [ ! -f "/app/server_public.pem" ]; then
-    echo "[ERROR] /app/server_public.pem not found!"
-    exit 1
+# Apply timezone from environment
+if [ -n "$TZ" ]; then
+    if [ -f "/usr/share/zoneinfo/$TZ" ]; then
+        ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
+        echo "$TZ" > /etc/timezone
+        echo "[INFO] Timezone set to $TZ"
+    else
+        echo "[WARN] Timezone '$TZ' not found. Using default."
+    fi
 fi
+
+
+## Validate backup script
+#if [ ! -f "/app/server_public.pem" ]; then
+#    echo "[ERROR] /app/server_public.pem not found!"
+#    exit 1
+#fi
 
 
 # Start Redis in the background
