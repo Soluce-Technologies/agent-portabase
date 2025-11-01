@@ -1,15 +1,17 @@
 import logging
 import requests
 from settings import config
+from utils.plugin.common import get_file_extension
 
 logger = logging.getLogger('agent_logger')
 
 
-def upload_restoration_file(url: str, generated_id: str):
+def upload_restoration_file(url: str, generated_id: str, db_type: str):
     try:
+        file_ext = get_file_extension(db_type)
         response = requests.get(url)
         response.raise_for_status()
-        filename = f'{config.DATA_PATH}/files/restorations/{generated_id}.dump'
+        filename = f'{config.DATA_PATH}/files/restorations/{generated_id}{file_ext}'
 
         with open(filename, "wb") as file:
             file.write(response.content)

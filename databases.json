@@ -17,6 +17,15 @@
       "port": 5432,
       "host": "localhost",
       "generatedId": "16678156-ff7e-4c97-8c83-0adeff214681"
+    },
+    {
+      "name": "mariadb",
+      "type": "mysql",
+      "username": "mariadb",
+      "password": "changeme",
+      "port": 3306,
+      "host": "localhost",
+      "generatedId": "16678124-ff7e-4c97-8c83-0adeff214681"
     }
   ]
 }

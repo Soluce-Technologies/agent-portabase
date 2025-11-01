@@ -8,7 +8,6 @@ echo "  / ____/ /_/ / /  / /_/ /_/ / /_/ / /_/ (__  )  __/  / ___ / /_/ /  __/ /
 echo " /_/    \____/_/   \__/\__,_/_.___/\__,_/____/\___/  /_/  |_\__, /\___/_/ /_/\__/   "
 echo "                                                           /____/                   "
 
-# Print project version (from pyproject.toml via Hatch)
 PROJECT_VERSION=$(python3 -c "from importlib.metadata import version; print(version('portabase-agent'))")
 echo "[INFO] Project version: $PROJECT_VERSION"
 
@@ -18,13 +17,9 @@ echo "[INFO] Project version: $PROJECT_VERSION"
 #ldconfig -p | grep libpq
 #ldd /usr/lib/postgresql/17/bin/pg_isready
 
-# Add PostgreSQL lib path silently
 echo "/usr/lib/x86_64-linux-gnu" | tee /etc/ld.so.conf.d/libpq.conf &>/dev/null
-# Update linker cache silently
 ldconfig &>/dev/null
-# Optional: check for libpq without echoing output
 ldconfig -p | grep libpq &>/dev/null
-# Optional: check pg_isready without echoing output
 ldd /usr/lib/postgresql/17/bin/pg_isready &>/dev/null || true
 
 

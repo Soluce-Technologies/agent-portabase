@@ -9,7 +9,7 @@ logger = logging.getLogger('agent_logger')
 
 
 def backup_database(generated_id: str, db_type: str, method: str):
-    result = delete_old_file(generated_id, f"backups/{method}")
+    result = delete_old_file(generated_id, f"backups/{method}", db_type)
     if result:
         database = get_database_instance(db_type, generated_id, method)
         if database:
@@ -39,27 +39,58 @@ def backup(data):
     return result
 
 
+# @shared_task()
+# def restore(data):
+#     logger.info("Starting task : Restore")
+#     db_type = data['dbms']
+#     generated_id = data['generatedId']
+#
+#     url = data['data']['restore']['file']
+#     result = delete_old_file(generated_id, "restorations", db_type)
+#     if result:
+#         result_upload, status = upload_restoration_file(url, generated_id, db_type)
+#         if status:
+#             database = get_database_instance(db_type, generated_id, "")
+#             if database:
+#                 status, result = database.restore()
+#                 if status:
+#                     logger.info("Restore task completed successfully")
+#                     send_result_restoration.apply_async(args=(generated_id, "success"), ignore_result=True)
+#                     return {"message": True}
+#
+#     send_result_restoration.apply_async(args=(generated_id, "failed"), ignore_result=True)
+#     return {"message": False}
 @shared_task()
 def restore(data):
-    logger.info("Starting task : Restore")
-    db_type = data['dbms']
-    generated_id = data['generatedId']
+    try:
+        logger.info("Starting task : Restore")
+        db_type = data['dbms']
+        generated_id = data['generatedId']
 
-    url = data['data']['restore']['file']
-    result = delete_old_file(generated_id, "restorations")
-    if result:
-        result_upload, status = upload_restoration_file(url, generated_id)
-        if status:
-            database = get_database_instance(db_type, generated_id, "")
-            if database:
-                status, result = database.restore()
-                if status:
-                    logger.info("Restore task completed successfully")
-                    send_result_restoration.apply_async(args=(generated_id, "success"), ignore_result=True)
-                    return {"message": True}
+        url = data['data']['restore']['file']
+        result = delete_old_file(generated_id, "restorations", db_type)
 
-    send_result_restoration.apply_async(args=(generated_id, "failed"), ignore_result=True)
-    return {"message": False}
+        if result:
+            result_upload, status = upload_restoration_file(url, generated_id, db_type)
+            if status:
+                database = get_database_instance(db_type, generated_id, "")
+                if database:
+                    status, result = database.restore()
+                    if status:
+                        logger.info("Restore task completed successfully")
+                        send_result_restoration.apply_async(args=(generated_id, "success"), ignore_result=True)
+                        return {"message": True}
+
+        send_result_restoration.apply_async(args=(generated_id, "failed"), ignore_result=True)
+        return {"message": False}
+
+    except Exception as e:
+        logger.exception(f"Unexpected error during restore task: {e}")
+        try:
+            send_result_restoration.apply_async(args=(data.get('generatedId'), "failed"), ignore_result=True)
+        except Exception as inner_e:
+            logger.exception(f"Failed to send failure result: {inner_e}")
+        return {"message": False}
 
 
 @shared_task()

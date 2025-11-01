@@ -1,8 +1,6 @@
 import os
-
 from settings import config
 from utils.database import Database
-
 
 class PostgresDatabase(Database):
     def __init__(self, host: str, database: str, user: str, password: str, port: str, generated_id: str, method: str):

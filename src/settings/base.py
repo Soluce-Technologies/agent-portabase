@@ -5,7 +5,7 @@ from dotenv import find_dotenv
 
 class DBType(str, Enum):
     POSTGRES = "postgresql"
-    # MYSQL = "mysql"
+    MYSQL = "mysql"
     # SQLITE = "sqlite"
     # MONGODB = "mongodb"
 

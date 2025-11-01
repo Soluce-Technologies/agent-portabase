@@ -16,7 +16,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ bookworm-pgdg main" > /et
     && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | tee /etc/apt/trusted.gpg.d/pgdg.asc \
     && apt-get update
 
-RUN apt-get install -y postgresql-client libpq5 \
+RUN apt-get install -y postgresql-client libpq5 mariadb-client \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
