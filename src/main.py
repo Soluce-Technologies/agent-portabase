@@ -31,17 +31,6 @@ def create_celery_app():
 
     app.autodiscover_tasks()
 
-    CELERY_TASK_ROUTES = {
-        'default.*': {
-            'queue': 'default',
-            'routing_key': 'default.#',
-        },
-        'periodic.*': {
-            'queue': 'periodic',
-            'routing_key': 'periodic.#',
-        }
-    }
-
     ping_crontab = crontab(
         minute='*',
         hour='*',

@@ -3,13 +3,11 @@ from typing import List, Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import find_dotenv
 
-
 class DBType(str, Enum):
     POSTGRES = "postgresql"
     # MYSQL = "mysql"
     # SQLITE = "sqlite"
     # MONGODB = "mongodb"
-    # Add other DB types as needed
 
 
 class Settings(BaseSettings):

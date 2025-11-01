@@ -5,29 +5,26 @@ LOGGING_CONFIG = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
-        # Default formatter
         'default': {
             'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
         },
-        # Fancy formatter with colors and icons
         'fancy': {
             'format': (
-                '\033[1;34m%(asctime)s\033[0m | '        # Timestamp in bold blue
-                '\033[1;36m%(name)s\033[0m | '          # Logger name in cyan
-                '%(levelname_icon)s %(levelname)s | '   # Icon + Level name
-                '\033[1;37m%(message)s\033[0m'          # Message in white
+                '\033[1;34m%(asctime)s\033[0m | '        
+                '\033[1;36m%(name)s\033[0m | '         
+                '%(levelname_icon)s %(levelname)s | '  
+                '\033[1;37m%(message)s\033[0m'
             ),
-            'datefmt': '%Y-%m-%d %H:%M:%S',  # Use this instead of adding in FancyFormatter
+            'datefmt': '%Y-%m-%d %H:%M:%S',
         },
     },
     'handlers': {
         'console': {
             'class': 'logging.StreamHandler',
-            'formatter': 'fancy',  # Use the fancy formatter
+            'formatter': 'fancy',
         },
     },
     'loggers': {
-        # Suppress Celery Beat logs
         'celery.beat': {
             'handlers': ['console'],
             'level': 'WARNING',
@@ -62,7 +59,6 @@ class FancyFormatter(logging.Formatter):
     }
 
     def format(self, record):
-        # Add level icon dynamically
         record.levelname_icon = self.LEVEL_ICONS.get(record.levelname, '')
         return super().format(record)
 
