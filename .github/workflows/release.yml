@@ -35,7 +35,7 @@ jobs:
           echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
           TAGS="solucetechnologies/agent-portabase:${GITHUB_REF#refs/tags/}"
           if [ "${{ github.event.release.target_commitish }}" = "main" ]; then
-            TAGS="$TAGS,solucetechnologies/portabase:latest"
+            TAGS="$TAGS,solucetechnologies/agent-portabase:latest"
           fi
           echo "tags=$TAGS" >> $GITHUB_OUTPUT
 
