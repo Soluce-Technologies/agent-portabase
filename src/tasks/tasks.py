@@ -41,8 +41,6 @@ def ping_server(self):
         return {"error": error}
 
     for database in server_data['databases']:
-
-        # check and update if necessary the cron for backup
         check_and_update_cron(database)
 
         if database['data']["backup"]["action"]:

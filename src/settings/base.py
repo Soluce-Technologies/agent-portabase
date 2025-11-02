@@ -1,7 +1,8 @@
 from enum import Enum
-from typing import List, Optional
+from typing import Optional
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from dotenv import find_dotenv
+
 
 class DBType(str, Enum):
     POSTGRES = "postgresql"
@@ -31,3 +32,4 @@ class Settings(BaseSettings):
     DB_TYPE: Optional[DBType] = None
 
     model_config = SettingsConfigDict(env_file=find_dotenv(), extra='allow')
+

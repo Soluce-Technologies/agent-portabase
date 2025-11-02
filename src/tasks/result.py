@@ -2,7 +2,7 @@ from celery import shared_task
 import logging
 import os
 from settings import config
-from utils.edge_key import decode_edge_key, EdgeKey
+from utils.edge_key import decode_edge_key
 import requests
 from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import serialization, padding as sym_padding

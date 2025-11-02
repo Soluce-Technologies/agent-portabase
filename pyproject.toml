@@ -5,10 +5,9 @@ build-backend = "hatchling.build"
 [tool.hatch.build.targets.wheel]
 packages = ["src"]
 
-
 [project]
 name = "portabase-agent"
-version = "1.0.1"
+version = "1.0.2"
 description = "The portabase agent project"
 authors = [
     { name = "Charles Gauthereau", email = "charles.gauthereau@soluce-technologies.com" },
@@ -25,7 +24,8 @@ dependencies = [
     "watchdog>=6.0.0",
     "requests>=2.32.3",
     "celery-redbeat>=2.2.0",
-    "cryptography>=46.0.3"
+    "cryptography>=46.0.3",
+    "tomli>=2.3.0"
 ]
 classifiers = [
     #   3 - Alpha

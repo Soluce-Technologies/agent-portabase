@@ -9,57 +9,43 @@ logger = logging.getLogger('agent_logger')
 
 
 def backup_database(generated_id: str, db_type: str, method: str):
-    result = delete_old_file(generated_id, f"backups/{method}", db_type)
-    if result:
-        database = get_database_instance(db_type, generated_id, method)
-        if database:
-            status, result = database.ping()
-            logger.info(f"{result}")
-            if status:
-                status, result, file = database.backup()
-                print(file)
+    try :
+        result = delete_old_file(generated_id, f"backups/{method}", db_type)
+        if result:
+            database = get_database_instance(db_type, generated_id, method)
+            if database:
+                status, result = database.ping()
+                logger.info(f"{result}")
                 if status:
-                    logger.info(f"{result} : {file}")
-                    logger.info("Backup task completed successfully")
-                    send_result_backup.apply_async(args=(file, generated_id, "success", method,), ignore_result=False)
-                    return {"message": True}
+                    status, result, file = database.backup()
+                    print(file)
+                    if status:
+                        logger.info(f"{result} : {file}")
+                        logger.info("Backup task completed successfully")
+                        send_result_backup.apply_async(args=(file, generated_id, "success", method,), ignore_result=False)
+                        return {"message": True}
 
-    send_result_backup.apply_async(args=("", generated_id, "failed", method,), ignore_result=True)
-    logger.error("Backup task completed with error")
-    return {"message": False}
+        send_result_backup.apply_async(args=("", generated_id, "failed", method,), ignore_result=True)
+        logger.error("Backup task completed with error")
+        return {"message": False}
 
+    except Exception as e:
+        logger.exception(f"Unexpected error during backup: {e}")
+        try:
+            send_result_backup.apply_async(args=("", generated_id, "failed", method,), ignore_result=True)
+        except Exception as inner_e:
+            logger.exception(f"Failed to send failure result: {inner_e}")
+        return {"message": False}
 
 @shared_task()
 def backup(data):
     logger.info("Starting task : Backup")
-
     db_type = data['dbms']
     generated_id = data['generatedId']
     result = backup_database(generated_id, db_type, "manual")
     return result
 
 
-# @shared_task()
-# def restore(data):
-#     logger.info("Starting task : Restore")
-#     db_type = data['dbms']
-#     generated_id = data['generatedId']
-#
-#     url = data['data']['restore']['file']
-#     result = delete_old_file(generated_id, "restorations", db_type)
-#     if result:
-#         result_upload, status = upload_restoration_file(url, generated_id, db_type)
-#         if status:
-#             database = get_database_instance(db_type, generated_id, "")
-#             if database:
-#                 status, result = database.restore()
-#                 if status:
-#                     logger.info("Restore task completed successfully")
-#                     send_result_restoration.apply_async(args=(generated_id, "success"), ignore_result=True)
-#                     return {"message": True}
-#
-#     send_result_restoration.apply_async(args=(generated_id, "failed"), ignore_result=True)
-#     return {"message": False}
 @shared_task()
 def restore(data):
     try:
