@@ -102,4 +102,3 @@ jobs:
           file: ./docker/Dockerfile
           push: true
           tags: ${{ env.TAGS }}
-          target: prod
