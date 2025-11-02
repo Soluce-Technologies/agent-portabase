@@ -2,7 +2,7 @@ name: Publish Docker image for release
 
 on:
   release:
-    types: [published]
+    types: [ published ]
 
 jobs:
   push_to_registry:
@@ -29,6 +29,16 @@ jobs:
         with:
           images: solucetechnologies/agent-portabase
 
+      - name: Set tags
+        id: set-tags
+        run: |
+          echo "RELEASE_TAG=${GITHUB_REF#refs/tags/}" >> $GITHUB_ENV
+          TAGS="solucetechnologies/agent-portabase:${GITHUB_REF#refs/tags/}"
+          if [ "${{ github.event.release.target_commitish }}" = "main" ]; then
+            TAGS="$TAGS,solucetechnologies/portabase:latest"
+          fi
+          echo "tags=$TAGS" >> $GITHUB_OUTPUT
+
       - name: Build and push Docker image
         id: push
         uses: docker/build-push-action@v6
@@ -38,10 +48,5 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          target: prod
 
-#      - name: Generate artifact attestation
-#        uses: actions/attest-build-provenance@v2
-#        with:
-#          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
-#          subject-digest: ${{ steps.push.outputs.digest }}
-#          push-to-registry: true
