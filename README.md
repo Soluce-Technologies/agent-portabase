@@ -118,8 +118,9 @@ Installation steps in order to use it locally and work on some features improvem
 - [ ] Security improvements
 - [ ] Multi db support
     - [x] PostgreSQL
+    - [x] MySQL
+    - [x] MariaDB
     - [ ] MongoDB
-    - [ ] MySQL
 
 See the [open issues](https://github.com/Soluce-Technologies/agent-portabase/issues) for a full list of proposed
 features (and known issues).

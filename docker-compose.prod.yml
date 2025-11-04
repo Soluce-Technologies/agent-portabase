@@ -4,15 +4,15 @@ services:
   app:
     container_name: agent-portabase-prod
     restart: always
-    image: solucetechnologies/agent-portabase:1.0.1-rc.2
+    image: solucetechnologies/agent-portabase:1.0.1-rc.3
     volumes:
-      - ./databases.json:/app/src/data/config/config.json
-      - ./server_public.pem:/app/server_public.pem
+      - ./databases.toml:/app/src/data/config/config.toml
     environment:
       TZ: "Europe/Paris"
       ENVIRONMENT: "development"
-      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiYzJjNDZmYzgtMGYzMi00NDJkLWJmMGYtZDYwNjFmZjdlYjg2In0"
-    network_mode: host #in development
+      DATABASES_CONFIG_FILE: "config.toml"
+      EDGE_KEY: "eyJzZXJ2ZXJVcmwiOiJodHRwOi8vbG9jYWxob3N0Ojg4ODciLCJhZ2VudElkIjoiMDliZTU4MTctNDZiZS00YWMwLTgwZDMtNTVlNDJkY2ZmMDIyIiwicHVibGljS2V5IjoiLS0tLS1CRUdJTiBSU0EgUFVCTElDIEtFWS0tLS0tXG5NSUlCQ2dLQ0FRRUFuYUVKdnVBSExlNGF5d0RmNGplelVobm45VXRkdksyZ3pEMEg2cERJYXczYkJKRkpwVnVDXG5uVFV3MXA3Q2RnOXBzdjZhRnpyOXZPd0J2MjMzckxpdVpCT2lCb2p2Q0QrSlZid3hyTzBRRW5hN2dmaHV1ZGYwXG5VVlJOMkxmK1g1aTkvZzJTNm5xcExoTm1DaGFJNk8ybktYZUNlRmtubEErRUJrNnFoV1FCVGozb05TYTFTOFY1XG40UFRTT2I4NUo3a2k5YllEbXRiNWxrU3dCNXdXOTdtQjg0ZzI2WHAvU3FFcmhKc0NGK3YrN09vTWYzTzJqTTNoXG5XMUQ0MzBPRitWaklwUGdoV09rZy96NXZQUWFHRzhqQ0h4VDlJR0Q0bjhyS05LQ3FTOGNyN2diTGU0cWpNdmhvXG5BQVVvaHpHR2FRNkhlWlJ4S0UvM3J1a2JldnY5dnJ2TTNRSURBUUFCXG4tLS0tLUVORCBSU0EgUFVCTElDIEtFWS0tLS0tXG4ifQ"
+    network_mode: host
 
   db:
     image: postgres:17-alpine
@@ -24,8 +24,21 @@ services:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
       - POSTGRES_PASSWORD=changeme
+    network_mode: host
 
-    network_mode: host #in development
+  db2:
+    image: mariadb:latest
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=mariadb
+      - MYSQL_USER=mariadb
+      - MYSQL_PASSWORD=changeme
+      - MYSQL_RANDOM_ROOT_PASSWORD=yes
+    volumes:
+      - mariadb-data:/var/lib/mysql
+    network_mode: host
 
 volumes:
   postgres-data-prod:
+  mariadb-data:
