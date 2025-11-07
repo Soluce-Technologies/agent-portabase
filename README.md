@@ -139,7 +139,7 @@ docker exec -i -e PGPASSWORD=<password> <container_name> psql -U <USER> -d <DATA
 install the client cli before
 
 ```bash
-mysql -h 127.0.0.1 -P <port> -u <username> -p<password> <database_name> < ./scripts/seed.sql
+mysql -h 127.0.0.1 -P <port> -u <username> -p<password> <database_name> < ./scripts/seed-mysql.sql
 ```
 
 <!-- CONTRIBUTING -->

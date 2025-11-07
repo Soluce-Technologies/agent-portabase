@@ -66,7 +66,7 @@ def get_schedules() -> dict:
 
 
 def get_crontab_as_array(entry):
-    crontab_schedule = entry.schedule  # Access the schedule
+    crontab_schedule = entry.schedule
     return [
         crontab_schedule._orig_minute,
         crontab_schedule._orig_hour,

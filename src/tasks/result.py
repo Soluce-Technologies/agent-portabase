@@ -20,14 +20,12 @@ def send_result_backup(file_path: str, generated_id: str, result: str, method: s
         url = f"{edge_key_data.serverUrl}/api/agent/{edge_key_data.agentId}/backup"
         logger.info(f'Status request | {url}')
 
-        # Base form data
         form_data = {
             "generatedId": (None, generated_id),
             "status": (None, result),
             "method": (None, method),
         }
 
-        # Optional encryption if file exists
         if file_path:
             server_pub = serialization.load_pem_public_key(edge_key_data.publicKey.encode("utf-8"))
             aes_key = os.urandom(32)
@@ -36,7 +34,6 @@ def send_result_backup(file_path: str, generated_id: str, result: str, method: s
             with open(file_path, "rb") as f:
                 data = f.read()
 
-            # PKCS7 padding
             padder = sym_padding.PKCS7(128).padder()
             padded_data = padder.update(data) + padder.finalize()
 
@@ -54,17 +51,13 @@ def send_result_backup(file_path: str, generated_id: str, result: str, method: s
                 )
             )
 
-            # Add file to form data
             form_data["file"] = (f"{generated_id}.enc", encrypted_backup, "application/octet-stream")
 
-            # Include AES key & IV in separate fields
             form_data["aes_key"] = (None, encrypted_key.hex())
             form_data["iv"] = (None, iv.hex())
         else:
-            # If no file, keep file empty and no AES info
             form_data["file"] = (None, "")
 
-        # Send request
         response = requests.post(url=url, files=form_data)
         response.raise_for_status()
         message = response.json()

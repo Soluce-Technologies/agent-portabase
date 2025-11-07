@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 echo "     ____             __        __                       ___                    __  "
 echo "    / __ \____  _____/ /_____ _/ /_  ____ _________     /   | ____ ____  ____  / /_ "
 echo "   / /_/ / __ \/ ___/ __/ __  / __ \/ __  / ___/ _ \   / /| |/ __  / _ \/ __ \/ __/ "
@@ -11,21 +10,12 @@ echo "                                                           /____/         
 PROJECT_VERSION=$(python3 -c "from importlib.metadata import version; print(version('portabase-agent'))")
 echo "[INFO] Project version: $PROJECT_VERSION"
 
-#
-#echo "/usr/lib/x86_64-linux-gnu" | tee /etc/ld.so.conf.d/libpq.conf
-#ldconfig
-#ldconfig -p | grep libpq
-#ldd /usr/lib/postgresql/17/bin/pg_isready
-
 echo "/usr/lib/x86_64-linux-gnu" | tee /etc/ld.so.conf.d/libpq.conf &>/dev/null
 ldconfig &>/dev/null
 ldconfig -p | grep libpq &>/dev/null
 ldd /usr/lib/postgresql/17/bin/pg_isready &>/dev/null || true
 
 
-
-
-# Apply timezone from environment
 if [ -n "$TZ" ]; then
     if [ -f "/usr/share/zoneinfo/$TZ" ]; then
         ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
@@ -36,11 +26,9 @@ if [ -n "$TZ" ]; then
     fi
 fi
 
-# Start Redis in the background
 echo "Starting Redis server..."
 redis-server --loglevel notice &>/dev/null &
 
-# Start Celery
 if [ "$ENVIRONMENT" = "development" ]; then
     echo "[INFO] Starting Celery worker with hot reload..."
     watchmedo auto-restart \
@@ -54,10 +42,7 @@ else
     celery -A main worker --loglevel=info &
 fi
 
-
-# Start Celery Beat in the background
 echo "Starting Celery Beat..."
 celery -A main beat -S redbeat.RedBeatScheduler --loglevel=info &
 
-# Wait for all background processes
 wait
