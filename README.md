@@ -1,102 +1,126 @@
-<!-- PROJECT LOGO -->
-
-[//]: # (<br />)
-
-[//]: # (<div align="center">)
-
-[//]: # (  <a href="https://github.com/othneildrew/Best-README-Template">)
-
-[//]: # (    <img src="images/logo.png" alt="Logo" width="80" height="80">)
-
-[//]: # (  </a>)
+<br />
+<div align="center">
+  <a href="https://portabase.io">
+    <img src="https://portabase.io/img/logo.png" alt="Logo" width="80" height="80">
+  </a>
 
 <h3 align="center">Portabase Agent</h3>
+  <p>
+    Free, open-source, and self-hosted solution for automated backup and restoration of your database instances.
+  </p>
 
-<p align="center">
-<a href="https://www.python.org/downloads/release/python-3120/" target="_blank">
-    <img src="https://img.shields.io/badge/python-3.13-blue.svg" alt="Supported Python versions">
-</a>
-</p>
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Docker Pulls](https://img.shields.io/docker/pulls/solucetechnologies/agent-portabase?color=brightgreen)](https://hub.docker.com/r/solucetechnologies/agent-portabase)
+[![Platform](https://img.shields.io/badge/platform-linux%20%7C%20macos%20%7C%20windows-lightgrey)](https://github.com/RostislavDugin/postgresus)
 
+[![PostgreSQL](https://img.shields.io/badge/python-3.13-blue.svg)](https://www.python.org/downloads/release/python-3120/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![MariaDB](https://img.shields.io/badge/MariaDB-003545?logo=mariadb&logoColor=white)](https://mariadb.org/)
+[![Self Hosted](https://img.shields.io/badge/self--hosted-yes-brightgreen)](https://github.com/RostislavDugin/postgresus)
 
-  <p align="center">
-    Backup / Restore your databases instances
-    <br />
-    <a href="https://portabase.net"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://portabase.net">View Demo</a>
-    ·
-    <a href="https://github.com/Soluce-Technologies/agent-portabase/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
-    ·
-    <a href="https://github.com/Soluce-Technologies/agent-portabase/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+  <p>
+    <strong>
+        <a href="https://portabase.io">Documentation</a> •
+        <a href="https://www.youtube.com/watch?v=D9uFrGxLc4s">Demo</a> •
+        <a href="#installation">Installation</a> •
+        <a href="#contributing">Contributing</a> •
+        <a href="https://github.com/Soluce-Technologies/agent-portabase/issues/new?labels=bug&template=bug-report---.md">Report Bug</a> •
+        <a href="https://github.com/Soluce-Technologies/agent-portabase/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    </strong>
   </p>
 
 
+</div>
 
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
+---
 
+## 📚 Table of Contents
 
-<!-- ABOUT THE PROJECT -->
+- [About The Project](#-about-the-project)
+- [Getting Started](#-getting-started)
+- [Roadmap](#-roadmap)
+- [Contributing](#-contributing)
+- [License](#-license)
+- [Contact](#-contact)
+- [Acknowledgments](#-acknowledgments)
 
-## About The Project
+---
+
+## ✨ About The Project
 
 Portabase Agent is the agent service use with Portabase Server. This service is for backup/restore db instances.
 <a href="https://github.com/Soluce-Technologies/portabase">Portabase Server</a>
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
 
 * [![Python][Python]][Python-url]
 * [![Celery][Celery]][Celery-url]
+* [![Docker][Docker]][Docker-url]
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
 
-
-<!-- GETTING STARTED -->
-
-## Getting Started
-
-### Prerequisites
-
-Sync your uv config
-
-* npm
-  ```sh
-  uv sync
-  ```
+## 🚀 Getting Started
 
 ### Installation
 
-Installation steps in order to use it locally and work on some features improvements
+Ensure Docker is installed on your machine before getting started.
 
-1. Clone the repo
+### Option 1:  Docker Compose Setup
+
+Create a `docker-compose.yml` file with the following configuration:
+
+```yaml
+name: agent-portabase
+
+services:
+  app:
+    container_name: agent-portabase
+    restart: always
+    image: solucetechnologies/agent-portabase:latest
+    volumes:
+      - ./databases.json:/app/src/data/config/config.json
+      # - ./databases.toml:/app/src/data/config/config.toml
+    environment:
+      TZ: "Europe/Paris"
+      # DATABASES_CONFIG_FILE: "config.toml" if you use .toml config file. By default, it's "config.json"
+      EDGE_KEY: "<Get your edge key from your dashboard>"
+    networks:
+      - portabase
+
+  db:
+    image: postgres:17-alpine
+    networks:
+      - portabase
+      - default
+    ports:
+      - "5430:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=<your_database>
+      - POSTGRES_USER=<database_user>
+      - POSTGRES_PASSWORD=<database_password>
+
+volumes:
+  postgres-data:
+
+networks:
+  portabase:
+    name: portabase_network
+    external: true
+```
+
+Then run:
+
+```bash
+docker compose up -d
+```
+
+### Option 2:  Locally (Development)
+
+1. Clone the repository
    ```sh
    git clone https://github.com/Soluce-Technologies/agent-portabase
    ```
@@ -105,12 +129,74 @@ Installation steps in order to use it locally and work on some features improvem
    docker compose up 
    ```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
+## 🔑 Config File
 
-<!-- ROADMAP -->
+You can configure your database connections by adding a **config file**. The software supports both **JSON** and **TOML** formats, so you can choose the format that best fits your workflow.
 
-## Roadmap
+Multiple databases can be connected through the same agent, which is useful for managing development, staging, and production environments.
+
+### JSON Example
+
+Create a `database.json` file with your database information:
+
+```json
+{
+  "databases": [
+    {
+      "name": "devdb",
+      "type": "postgresql",
+      "username": "devuser",
+      "password": "changeme",
+      "port": 5432,
+      "host": "localhost",
+      "generatedId": "16678159-ff7e-4c97-8c83-0adeff214681"
+    },
+    {
+      "name": "mariadb",
+      "type": "mysql",
+      "username": "mariadb",
+      "password": "changeme",
+      "port": 3306,
+      "host": "localhost",
+      "generatedId": "16678124-ff7e-4c97-8c83-0adeff214681"
+    }
+  ]
+}
+```
+
+For `generatedId`, you will need to generate it yourself using the [UUID V4 format](https://www.uuidgenerator.net/)
+
+### TOML Example
+
+Create a `database.json` file with your database information:
+
+```toml
+[[databases]]
+name = "devdb"
+type = "postgresql"
+username = "devuser"
+password = "changeme"
+port = 5432
+host = "localhost"
+generatedId = "16678159-ff7e-4c97-8c83-0adeff214681"
+
+[[databases]]
+name = "mariadb"
+type = "mysql"
+username = "mariadb"
+password = "changeme"
+port = 3306
+host = "localhost"
+generatedId = "16678124-ff7e-4c97-8c83-0adeff214681"
+```
+
+✅ Both JSON and TOML formats are fully supported.
+
+---
+
+## 🗺️ Roadmap
 
 - [ ] Add Changelog
 - [ ] Add tests procedure
@@ -125,39 +211,48 @@ Installation steps in order to use it locally and work on some features improvem
 See the [open issues](https://github.com/Soluce-Technologies/agent-portabase/issues) for a full list of proposed
 features (and known issues).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+---
 
-## Database Test Seed
+## 📦 Database Seed (development)
 
 Using Docker
 
 ### For postgres
+
 ```bash
 docker exec -i -e PGPASSWORD=<password> <container_name> psql -U <USER> -d <DATABASE> < ./scripts/seed.sql
 ```
-### For mysql 
-install the client cli before
+
+### For mysql
+
+Install the client cli before
 
 ```bash
 mysql -h 127.0.0.1 -P <port> -u <username> -p<password> <database_name> < ./scripts/seed-mysql.sql
 ```
 
-<!-- CONTRIBUTING -->
+--- 
 
-## Contributing
+## 🤝 Contributing
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any
-contributions you make are **greatly appreciated**.
+Contributions are welcome and appreciated! Here's how to get started:
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also
-simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+1. Fork the repository
+2. Create a new branch:
+    ```bash
+    git checkout -b feature/YourFeature
+    ```
+3. Commit your changes:
+    ```bash
+    git commit -m "Add YourFeature"
+    ```
+4. Push to the branch:
+    ```bash
+    git push origin feature/YourFeature
+    ```
+5. Open a pull request
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Give the project a ⭐ if you like it!
 
 ### Top contributors:
 
@@ -165,29 +260,28 @@ Don't forget to give the project a star! Thanks again!
   <img src="https://contrib.rocks/image?repo=Soluce-Technologies/agent-portabase" alt="contrib.rocks image" />
 </a>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## Memo
+### Semantic Versioning
 
-If you're using Semantic Versioning (SemVer) to version your Docker images, you can use the following format:
+Use the following format for Docker image versioning:
 
-```major.minor.patch-rc.release (e.g. 1.0.0-rc.1)```
+```bash
+major.minor.patch-rc.release
+# Example: 1.0.0-rc.1
 
-```major.minor.patch-rc.release-tag (e.g. 1.0.0-rc.1-dev)```
+major.minor.patch-rc.release-tag
+# Example: 1.0.0-rc.1-dev
+```
 
+---
 
-<!-- LICENSE -->
-
-## License
+## 📄 License
 
 Distributed under the Apache License. See `LICENSE.txt` for more information.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+--- 
 
-
-<!-- CONTACT -->
-
-## Contact
+## 📬 Contact
 
 Killian Larcher - killian.larcher@soluce-technologies.com
 Charles Gauthereau - charles.gauthereau@soluce-technologies.com
@@ -195,15 +289,20 @@ Charles Gauthereau - charles.gauthereau@soluce-technologies.com
 Project
 Link: [https://github.com/Soluce-Technologies/agent-portabase](https://github.com/Soluce-Technologies/agent-portabase)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+--- 
+## 🙏 Acknowledgments
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+Thanks to all contributors and the open-source community!
+
 
 [Python]: https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54
+
+[Docker]: https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge
 
 [Celery]: https://img.shields.io/static/v1?style=for-the-badge&message=Celery&color=37814A&logo=Celery&logoColor=FFFFFF&label
 
 [Python-url]: https://www.python.org/
+
+[Docker-url]: https://www.docker.com/
 
 [Celery-url]: https://docs.celeryq.dev/en/stable/
