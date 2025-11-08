@@ -283,11 +283,9 @@ Distributed under the Apache License. See `LICENSE.txt` for more information.
 
 ## 📬 Contact
 
-Killian Larcher - killian.larcher@soluce-technologies.com
-Charles Gauthereau - charles.gauthereau@soluce-technologies.com
-
-Project
-Link: [https://github.com/Soluce-Technologies/agent-portabase](https://github.com/Soluce-Technologies/agent-portabase)
+- Killian Larcher - killian.larcher@soluce-technologies.com
+- Charles Gauthereau - charles.gauthereau@soluce-technologies.com 
+- Project Link: [https://github.com/Soluce-Technologies/agent-portabase](https://github.com/Soluce-Technologies/agent-portabase)
 
 --- 
 ## 🙏 Acknowledgments
